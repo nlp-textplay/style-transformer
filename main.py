@@ -18,7 +18,6 @@ args = parser.parse_args()
 
 class Config():
     data_path = './data/' + args.data_path + '/'
-    data_size = args.data_size
     log_dir = 'runs/exp'
     save_path = './save/' + args.save_time + '/'
     pretrained_embed_path = './embedding/'
