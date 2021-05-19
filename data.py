@@ -32,6 +32,9 @@ def load_dataset(config, train_pos='style.train.0', train_neg='style.train.1',
     dev_pos_set, dev_neg_set = map(dataset_fn, [dev_pos, dev_neg])
     test_pos_set, test_neg_set = map(dataset_fn, [test_pos, test_neg])
 
+    print("len train pos set")
+    print(len(train_pos_set))
+
     TEXT.build_vocab(train_pos_set, train_neg_set, min_freq=config.min_freq)
 
     if config.load_pretrained_embed:
