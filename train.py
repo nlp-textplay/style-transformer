@@ -202,12 +202,12 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
 
     # style consistency loss
 
-    adv_log_porbs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
+    adv_log_probs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
     if config.discriminator_method == 'Multi':
         adv_labels = rev_styles + 1
     else:
         adv_labels = torch.ones_like(rev_styles)
-    adv_loss = loss_fn(adv_log_porbs, adv_labels)
+    adv_loss = loss_fn(adv_log_probs, adv_labels)
     adv_loss = adv_loss.sum() / batch_size
     adv_loss *= config.adv_factor
         
@@ -236,9 +236,9 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
     model_F.train()
     model_D.train()
 
-    config.save_folder = config.save_path + '/' + str(time.strftime('%b%d%H%M%S', time.localtime()))
-    os.makedirs(config.save_folder)
-    os.makedirs(config.save_folder + '/ckpts')
+    config.save_folder = config.save_path # + '/' + str(time.strftime('%b%d%H%M%S', time.localtime()))
+    os.makedirs(config.save_folder, exist_ok=True)
+    os.makedirs(config.save_folder + '/ckpts', exist_ok=True)
     print('Save Path:', config.save_folder)
 
     print('Model F pretraining......')
@@ -324,6 +324,14 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
             auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
+
+
+    # # when done
+    # torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + 'F.pth')
+    # torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + 'D.pth')
+    # # auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
+
+
 
 def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
     model_F.eval()
