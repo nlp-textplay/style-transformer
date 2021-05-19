@@ -4,11 +4,20 @@ from data import load_dataset
 from models import StyleTransformer, Discriminator
 from train import train, auto_eval
 
+import argparse
+
+parser = argparse.ArgumentParser(description="Here is your model discription.")
+parser.add_argument('--save_time', type=str, default=False)
+parser.add_argument('--data_path', type=str, default='yelp')
+parser.add_argument('--data_size', type=int, default=None)
+
+args = parser.parse_args()
 
 class Config():
-    data_path = './data/yelp/'
+    data_path = './data/' + args.data_path + '/'
+    data_size = args.data_size
     log_dir = 'runs/exp'
-    save_path = './save'
+    save_path = './save/' + args.save_time + '/'
     pretrained_embed_path = './embedding/'
     device = torch.device('cuda' if True and torch.cuda.is_available() else 'cpu')
     discriminator_method = 'Multi' # 'Multi' or 'Cond'

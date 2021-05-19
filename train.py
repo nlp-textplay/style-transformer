@@ -236,9 +236,9 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
     model_F.train()
     model_D.train()
 
-    config.save_folder = config.save_path + '/' + str(time.strftime('%b%d%H%M%S', time.localtime()))
-    os.makedirs(config.save_folder)
-    os.makedirs(config.save_folder + '/ckpts')
+    config.save_folder = config.save_path # + '/' + str(time.strftime('%b%d%H%M%S', time.localtime()))
+    os.makedirs(config.save_folder, exist_ok=True)
+    os.makedirs(config.save_folder + '/ckpts', exist_ok=True)
     print('Save Path:', config.save_folder)
 
     print('Model F pretraining......')
@@ -324,6 +324,14 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
             auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
+
+
+    # # when done
+    # torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + 'F.pth')
+    # torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + 'D.pth')
+    # # auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
+
+
 
 def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
     model_F.eval()
