@@ -126,7 +126,16 @@ def d_step(config, vocab, model_F, model_D, optimizer_D, batch, temperature):
 def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
            cyc_rec_enable=True):
     model_D.eval()
-    
+    l1 = config.l1
+    l2 = config.l2
+    l3 = config.l3
+
+    l_sum = (l1 + l2 + l3) / 3
+
+    l1 /= l_sum
+    l2 /= l_sum
+    l3 /= l_sum
+
     pad_idx = vocab.stoi['<pad>']
     eos_idx = vocab.stoi['<eos>']
     unk_idx = vocab.stoi['<unk>']
@@ -164,7 +173,7 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
     slf_rec_loss = slf_rec_loss.sum() / batch_size
     slf_rec_loss *= config.slf_factor
     
-    slf_rec_loss.backward()
+    (slf_rec_loss * l1).backward()
 
     # cycle consistency loss
 
@@ -211,7 +220,7 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
     adv_loss = adv_loss.sum() / batch_size
     adv_loss *= config.adv_factor
         
-    (cyc_rec_loss + adv_loss).backward()
+    (l2 * cyc_rec_loss + l3 * adv_loss).backward()
         
     # update parameters
     
