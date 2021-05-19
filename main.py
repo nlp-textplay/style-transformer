@@ -9,6 +9,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Here is your model discription.")
 parser.add_argument('--save_time', type=str, default=False)
 parser.add_argument('--data_path', type=str, default='shakespeare')
+parser.add_argument('--max_length', type=int, default=30)
 parser.add_argument('--l1', type=float, default=1)
 parser.add_argument('--l2', type=float, default=1)
 parser.add_argument('--l3', type=float, default=1)
@@ -28,7 +29,7 @@ class Config():
     l2 = args.l2
     l3 = args.l3
     min_freq = 3
-    max_length = 16
+    max_length = args.max_length
     embed_size = 256
     d_model = 256
     h = 4
