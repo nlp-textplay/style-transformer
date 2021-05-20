@@ -389,7 +389,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
 
 
     evaluator = Evaluator()
-    ref_text = evaluator.yelp_ref
+    # ref_text = evaluator.yelp_ref
 
     
     acc_neg = evaluator.yelp_acc_0(rev_output[0])
