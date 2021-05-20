@@ -86,7 +86,7 @@ def main():
     if args.train:
         train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters)
     else:
-        model_F = torch.load(args.model_F_path)
+        model_F.load_state_dict(torch.load(args.model_F_path))
         auto_eval(config, vocab, model_F, test_iters, args.global_step, None)
     
 
