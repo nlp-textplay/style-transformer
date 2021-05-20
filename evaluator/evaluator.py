@@ -13,7 +13,7 @@ class Evaluator(object):
         resource_package = __name__
 
         yelp_acc_path = 'acc_style.bin'
-        yelp_ppl_path = 'ppl_yelp.binary'
+        yelp_ppl_path = 'ppl_style.binary'
         yelp_ref0_path = 'yelp.refs.0'
         yelp_ref1_path = 'yelp.refs.1'
 
