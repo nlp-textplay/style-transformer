@@ -412,7 +412,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
         print('[gold]', gold_text[0][idx])
         print('[raw ]', raw_output[0][idx])
         print('[rev ]', rev_output[0][idx])
-        print('[ref ]', ref_text[0][idx])
+        # print('[ref ]', ref_text[0][idx])
 
     print('*' * 20, '********', '*' * 20)
     
@@ -423,7 +423,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
         print('[gold]', gold_text[1][idx])
         print('[raw ]', raw_output[1][idx])
         print('[rev ]', rev_output[1][idx])
-        print('[ref ]', ref_text[1][idx])
+        # print('[ref ]', ref_text[1][idx])
 
     print('*' * 20, '********', '*' * 20)
 
@@ -461,7 +461,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
             print('[gold]', gold_text[0][idx], file=fw)
             print('[raw ]', raw_output[0][idx], file=fw)
             print('[rev ]', rev_output[0][idx], file=fw)
-            print('[ref ]', ref_text[0][idx], file=fw)
+            # print('[ref ]', ref_text[0][idx], file=fw)
 
         print('*' * 20, '********', '*' * 20, file=fw)
 
@@ -470,7 +470,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
             print('[gold]', gold_text[1][idx], file=fw)
             print('[raw ]', raw_output[1][idx], file=fw)
             print('[rev ]', rev_output[1][idx], file=fw)
-            print('[ref ]', ref_text[1][idx], file=fw)
+            # print('[ref ]', ref_text[1][idx], file=fw)
 
         print('*' * 20, '********', '*' * 20, file=fw)
         
