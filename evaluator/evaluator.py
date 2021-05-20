@@ -49,8 +49,8 @@ class Evaluator(object):
         # turn off gpu
         self.sim = WordAveraging(args, vocab_words)
         self.sim.load_state_dict(state_dict, strict=True)
-        sp = spm.SentencePieceProcessor()
-        sp.Load(sp_path)
+        self.sp = spm.SentencePieceProcessor()
+        self.sp.Load(sp_path)
         self.sim.eval()
         self.tok = TreebankWordTokenizer()
         
