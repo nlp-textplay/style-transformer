@@ -146,8 +146,12 @@ class Evaluator(object):
 
     def find_similarity(self, s1, s2):
         with torch.no_grad():
+            print(s1)
+            print(s2)
             s1 = [self.make_example(x) for x in s1]
             s2 = [self.make_example(x) for x in s2]
+            print(s1)
+            print(s2)
             wx1, wl1, wm1 = self.sim.torchify_batch(s1)
             wx2, wl2, wm2 = self.sim.torchify_batch(s2)
             scores = self.sim.scoring_function(wx1, wm1, wl1, wx2, wm2, wl2)

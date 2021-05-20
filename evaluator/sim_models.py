@@ -57,6 +57,9 @@ class ParaModel(nn.Module):
 
         g1 = self.encode(g_idxs1, g_mask1, g_lengths1)
         g2 = self.encode(g_idxs2, g_mask2, g_lengths2)
+        print("Sim shapes")
+        print(g1.shape)
+        print(g2.shape)
         return self.cosine(g1, g2)
 
 class WordAveraging(ParaModel):
