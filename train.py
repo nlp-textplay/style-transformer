@@ -280,7 +280,10 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
                 temperature = (1 - k) * t_a + k * t_b
                 return temperature
     batch_iters = iter(train_iters)
-    while True:
+
+    its = config.total_its 
+    while its > 0:# True:
+        its -= 1
         drop_decay = calc_temperature(config.drop_rate_config, global_step)
         temperature = calc_temperature(config.temperature_config, global_step)
         batch = next(batch_iters)
@@ -333,12 +336,6 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
             auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
-
-
-    # # when done
-    # torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + 'F.pth')
-    # torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + 'D.pth')
-    # # auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
 
 
 
