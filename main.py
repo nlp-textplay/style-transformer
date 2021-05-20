@@ -13,6 +13,7 @@ parser.add_argument('--max_length', type=int, default=30)
 parser.add_argument('--l1', type=float, default=1)
 parser.add_argument('--l2', type=float, default=1)
 parser.add_argument('--l3', type=float, default=1)
+parser.add_argument('--total_its', type=int, default=30)
 
 
 args = parser.parse_args()
@@ -28,6 +29,7 @@ class Config():
     l1 = args.l1
     l2 = args.l2
     l3 = args.l3
+    total_its = args.total_its
     min_freq = 3
     max_length = args.max_length
     embed_size = 256

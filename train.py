@@ -280,7 +280,10 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
                 temperature = (1 - k) * t_a + k * t_b
                 return temperature
     batch_iters = iter(train_iters)
-    while True:
+
+    its = config.total_its 
+    while its > 0:# True:
+        its -= 1
         drop_decay = calc_temperature(config.drop_rate_config, global_step)
         temperature = calc_temperature(config.temperature_config, global_step)
         batch = next(batch_iters)
