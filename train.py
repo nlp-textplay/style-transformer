@@ -449,7 +449,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
     
     # save output
     save_file = config.save_folder + '/' + str(global_step) + '.txt'
-    eval_log_file = config.save_folder + '/eval_log.txt'
+    eval_log_file = config.save_folder + 'eval_log.txt'
     with open(eval_log_file, 'a') as fl:
         print(('iter{:5d}:  acc_pos: {:.4f} acc_neg: {:.4f} ' + \
                'self_bleu_pos: {:.4f} self_bleu_neg: {:.4f} ' + \
