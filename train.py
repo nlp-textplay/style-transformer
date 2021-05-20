@@ -350,8 +350,14 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
         rev_output = []
         for batch in data_iter:
             inp_tokens = batch.text
+            print("1")
+            print(inp_tokens)
             inp_lengths = get_lengths(inp_tokens, eos_idx)
+            print("2")
+            print(inp_lengths)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
+            print("3")
+            print(raw_styles)
             rev_styles = 1 - raw_styles
         
             with torch.no_grad():
@@ -375,7 +381,10 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
                     differentiable_decode=False,
                     temperature=temperature,
                 )
-                
+            print("4")
+            print(raw_log_probs)
+            print("5")
+            print(raw_log_probs.argmax(-1))
             gold_text += tensor2text(vocab, inp_tokens.cpu())
             raw_output += tensor2text(vocab, raw_log_probs.argmax(-1).cpu())
             rev_output += tensor2text(vocab, rev_log_probs.argmax(-1).cpu())
