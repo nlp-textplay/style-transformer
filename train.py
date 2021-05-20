@@ -330,15 +330,9 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')
             torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_D.pth')
-            auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
+            # auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
-
-
-    # # when done
-    # torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + 'F.pth')
-    # torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + 'D.pth')
-    # # auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
 
 
 

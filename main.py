@@ -62,9 +62,14 @@ class Config():
 
 def main():
     config = Config()
-    train_iters, dev_iters, test_iters, vocab = load_dataset(config, train_pos='train.pos', train_neg='train.neg',
-                 dev_pos='dev.pos', dev_neg='dev.neg',
-                 test_pos='test.pos', test_neg='test.neg')
+
+    # train_iters, dev_iters, test_iters, vocab = load_dataset(config, train_pos='train.pos', train_neg='train.neg',
+    #              dev_pos='dev.pos', dev_neg='dev.neg',
+    #              test_pos='test.pos', test_neg='test.neg')
+    
+    train_iters, dev_iters, test_iters, vocab = load_dataset(config)
+    
+
     print('Vocab size:', len(vocab))
     model_F = StyleTransformer(config, vocab).to(config.device)
     model_D = Discriminator(config, vocab).to(config.device)
