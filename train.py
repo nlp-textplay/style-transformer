@@ -396,6 +396,10 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
     acc_pos = evaluator.yelp_acc_1(rev_output[1])
     self_bleu_neg = evaluator.self_bleu_b(gold_text[0], rev_output[0])
     self_bleu_pos = evaluator.self_bleu_b(gold_text[1], rev_output[1])
+
+    # bleu_neg = evaluator.yelp_ref_bleu_0(rev_output[0])
+    # bleu_pos = evaluator.yelp_ref_bleu_1(rev_output[1])
+
     ppl_neg = evaluator.yelp_ppl(rev_output[0])
     ppl_pos = evaluator.yelp_ppl(rev_output[1])
     sim_neg = evaluator.content_sim(gold_text[0], rev_output[0])
