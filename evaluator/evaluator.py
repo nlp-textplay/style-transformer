@@ -6,8 +6,8 @@ import pkg_resources
 import kenlm
 import math
 import torch
-from sim_models import WordAveraging
-from sim_utils import Example
+from evaluator.sim_models import WordAveraging
+from evaluator.sim_utils import Example
 from nltk.tokenize import TreebankWordTokenizer
 import sentencepiece as spm
 
