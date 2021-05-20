@@ -340,6 +340,20 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
 
 
 def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
+    if temperature is None:
+        def calc_temperature(temperature_config, step):
+            num = len(temperature_config)
+            for i in range(num):
+                t_a, s_a = temperature_config[i]
+                if i == num - 1:
+                    return t_a
+                t_b, s_b = temperature_config[i + 1]
+                if s_a <= step < s_b:
+                    k = (step - s_a) / (s_b - s_a)
+                    temperature = (1 - k) * t_a + k * t_b
+                    return temperature
+        temperature = calc_temperature(config.temperature_config, global_step)
+
     model_F.eval()
     vocab_size = len(vocab)
     eos_idx = vocab.stoi['<eos>']
@@ -350,14 +364,8 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
         rev_output = []
         for batch in data_iter:
             inp_tokens = batch.text
-            print("1")
-            print(inp_tokens)
             inp_lengths = get_lengths(inp_tokens, eos_idx)
-            print("2")
-            print(inp_lengths)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
-            print("3")
-            print(raw_styles)
             rev_styles = 1 - raw_styles
         
             with torch.no_grad():
@@ -381,10 +389,7 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
                     differentiable_decode=False,
                     temperature=temperature,
                 )
-            print("4")
-            print(raw_log_probs)
-            print("5")
-            print(raw_log_probs.argmax(-1))
+
             gold_text += tensor2text(vocab, inp_tokens.cpu())
             raw_output += tensor2text(vocab, raw_log_probs.argmax(-1).cpu())
             rev_output += tensor2text(vocab, rev_log_probs.argmax(-1).cpu())
@@ -395,18 +400,6 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
     neg_iter = test_iters.neg_iter
     
     gold_text, raw_output, rev_output = zip(inference(neg_iter, 0), inference(pos_iter, 1))
-
-    print("rev_output")
-    print(rev_output[0])
-    print(rev_output[1])
-
-    print("raw_output")
-    print(raw_output[0])
-    print(raw_output[1])
-
-    print("gold_text")
-    print(gold_text[0])
-    print(gold_text[1])
 
     evaluator = Evaluator()
     # ref_text = evaluator.yelp_ref

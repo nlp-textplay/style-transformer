@@ -14,6 +14,11 @@ parser.add_argument('--l1', type=float, default=1)
 parser.add_argument('--l2', type=float, default=1)
 parser.add_argument('--l3', type=float, default=1)
 parser.add_argument('--total_its', type=int, default=30)
+parser.add_argument('--train', type=bool, default=True)
+parser.add_argument('--global_step', type=int, default=0)
+parser.add_argument('--model_F_path', type=str, default=None)
+parser.add_argument('--model_D_path', type=str, default=None)
+
 
 
 args = parser.parse_args()
@@ -77,7 +82,11 @@ def main():
     model_D = Discriminator(config, vocab).to(config.device)
     print(config.discriminator_method)
     
-    train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters)
+    if args.train:
+        train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters)
+    else:
+        model_F = torch.load(args.model_F_path)
+        auto_eval(config, vocab, model_F, test_iters, args.global_step, None)
     
 
 if __name__ == '__main__':
