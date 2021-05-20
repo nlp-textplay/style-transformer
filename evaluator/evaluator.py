@@ -129,12 +129,6 @@ class Evaluator(object):
             sum += score
         return math.pow(10, -sum / length)
 
-    def content_sim(self, texts_origin, texts_transferred):
-        num_examples = len(texts_origin)
-        total_sim = 0
-        for i in range(num_examples):
-            total_sim += self.find_similarity(texts_origin[0], texts_transferred[0])
-        return total_sim / num_examples
 
     def make_example(self, sentence):
         sentence = sentence.lower()
@@ -144,6 +138,7 @@ class Evaluator(object):
         wp1.populate_embeddings(self.sim.vocab)
         return wp1
 
+
     def find_similarity(self, texts_origin, texts_transferred):
         with torch.no_grad():
             s1 = [self.make_example(x) for x in texts_origin]
@@ -151,7 +146,6 @@ class Evaluator(object):
             wx1, wl1, wm1 = self.sim.torchify_batch(s1)
             wx2, wl2, wm2 = self.sim.torchify_batch(s2)
             scores = self.sim.scoring_function(wx1, wm1, wl1, wx2, wm2, wl2)
-            print(scores.shape)
             return torch.mean(scores).item() #[x.item() for x in scores]
 
     
