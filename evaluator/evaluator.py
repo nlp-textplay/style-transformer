@@ -5,6 +5,11 @@ import fasttext
 import pkg_resources
 import kenlm
 import math
+import torch
+from sim_models import WordAveraging
+from sim_utils import Example
+from nltk.tokenize import TreebankWordTokenizer
+import sentencepiece as spm
 
 
 class Evaluator(object):
@@ -16,12 +21,15 @@ class Evaluator(object):
         yelp_ppl_path = 'ppl_style.binary'
         yelp_ref0_path = 'yelp.refs.0'
         yelp_ref1_path = 'yelp.refs.1'
+        sim_path = "sim.pt"
+        sp_path = "sim.sp.30k.model"
 
         
         yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)
         yelp_ppl_file = pkg_resources.resource_stream(resource_package, yelp_ppl_path)
         yelp_ref0_file = pkg_resources.resource_stream(resource_package, yelp_ref0_path)
         yelp_ref1_file = pkg_resources.resource_stream(resource_package, yelp_ref1_path)
+        sim_file = pkg_resources.resource_stream(resource_package, sim_path)
 
         
         self.yelp_ref = []
@@ -31,6 +39,18 @@ class Evaluator(object):
             self.yelp_ref.append(fin.readlines())
         self.classifier_yelp = fasttext.load_model(yelp_acc_file.name)
         self.yelp_ppl_model = kenlm.Model(yelp_ppl_file.name)
+        
+        sim = torch.load(sim_file.name)
+        state_dict = sim['state_dict']
+        vocab_words = sim['vocab_words']
+        args = sim['args']
+        # turn off gpu
+        self.sim = WordAveraging(args, vocab_words)
+        self.sim.load_state_dict(state_dict, strict=True)
+        sp = spm.SentencePieceProcessor()
+        sp.Load(sp_path)
+        self.sim.eval()
+        self.tok = TreebankWordTokenizer()
         
     def yelp_style_check(self, text_transfered, style_origin):
         text_transfered = ' '.join(word_tokenize(text_transfered.lower().strip()))
@@ -106,5 +126,29 @@ class Evaluator(object):
             score = self.yelp_ppl_model.score(line)
             sum += score
         return math.pow(10, -sum / length)
+
+    def content_sim(self, texts_origin, texts_transferred):
+        num_examples = len(texts_origin)
+        total_sim = 0
+        for i in range(num_examples):
+            total_sim += self.find_similarity(texts_origin[0], texts_transferred[0])
+        return total_sim / num_examples
+
+    def make_example(self, sentence):
+        sentence = sentence.lower()
+        sentence = " ".join(self.tok.tokenize(sentence))
+        sentence = self.sp.EncodeAsPieces(sentence)
+        wp1 = Example(" ".join(sentence))
+        wp1.populate_embeddings(self.sim.vocab)
+        return wp1
+
+    def find_similarity(self, s1, s2):
+        with torch.no_grad():
+            s1 = [self.make_example(x, self.sim) for x in s1]
+            s2 = [self.make_example(x, self.sim) for x in s2]
+            wx1, wl1, wm1 = self.sim.torchify_batch(s1)
+            wx2, wl2, wm2 = self.sim.torchify_batch(s2)
+            scores = self.sim.scoring_function(wx1, wm1, wl1, wx2, wm2, wl2)
+            return [x.item() for x in scores]
 
     
