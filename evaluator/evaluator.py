@@ -22,7 +22,7 @@ class Evaluator(object):
         yelp_ref0_path = 'yelp.refs.0'
         yelp_ref1_path = 'yelp.refs.1'
         sim_path = "sim.pt"
-        sp_path = "sim.sp.30k.model"
+        sp_path = "evaluator/sim.sp.30k.model"
 
         
         yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)
