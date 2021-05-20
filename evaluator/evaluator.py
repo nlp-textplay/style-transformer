@@ -59,7 +59,7 @@ class Evaluator(object):
         if text_transfered == '':
             return False
         label = self.classifier_yelp.predict([text_transfered])
-        style_transfered = label[0][0] == '__label__positive'
+        style_transfered = label[0][0] == '__label__0'
         return (style_transfered != style_origin)
 
     def yelp_acc_b(self, texts, styles_origin):
