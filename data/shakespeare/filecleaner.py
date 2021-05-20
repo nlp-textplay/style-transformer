@@ -2,7 +2,7 @@ files = ["dev", "test", "train"]
 
 for f in files:
 
-    file = open(f"style.{f}.1", "r")
+    file = open(f"style.{f}.0", "r")
     writefile = open(f"style.{f}.2", "w")
     LIMIT = 32 - 1
 
