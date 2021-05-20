@@ -1,5 +1,7 @@
 from nltk.tokenize import word_tokenize
 from nltk.translate.bleu_score import sentence_bleu
+import nltk
+nltk.download('punkt')
 
 import fasttext
 import pkg_resources
