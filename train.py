@@ -136,8 +136,8 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
         l1 /= l_sum
         l2 /= l_sum
         l3 /= l_sum
-    print("Loss weights")
-    print(f"l1: {l1} l2: {l2} l3: {l3}")
+    # print("Loss weights")
+    # print(f"l1: {l1} l2: {l2} l3: {l3}")
 
 
 
