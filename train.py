@@ -408,14 +408,20 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
     
     acc_neg = evaluator.yelp_acc_0(rev_output[0])
     acc_pos = evaluator.yelp_acc_1(rev_output[1])
+    print(acc_neg)
+    print(acc_pos)
     self_bleu_neg = evaluator.self_bleu_b(gold_text[0], rev_output[0])
     self_bleu_pos = evaluator.self_bleu_b(gold_text[1], rev_output[1])
+    print(self_bleu_neg)
+    print(self_bleu_pos)
     # bleu_neg = evaluator.yelp_ref_bleu_0(rev_output[0])
     # bleu_pos = evaluator.yelp_ref_bleu_1(rev_output[1])
-    ppl_neg = evaluator.yelp_ppl(rev_output[0])
-    ppl_pos = evaluator.yelp_ppl(rev_output[1])
     sim_neg = evaluator.find_similarity(gold_text[0], rev_output[0])
     sim_pos = evaluator.find_similarity(gold_text[1], rev_output[1])
+    print(sim_neg)
+    print(sim_pos)
+    ppl_neg = evaluator.yelp_ppl(rev_output[0])
+    ppl_pos = evaluator.yelp_ppl(rev_output[1])
 
     for k in range(5):
         idx = np.random.randint(len(rev_output[0]))
