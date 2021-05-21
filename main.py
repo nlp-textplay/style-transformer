@@ -14,6 +14,7 @@ parser.add_argument('--l1', type=float, default=1)
 parser.add_argument('--l2', type=float, default=1)
 parser.add_argument('--l3', type=float, default=1)
 parser.add_argument('--total_its', type=int, default=30)
+parser.add_argument('--ablate', type=str, default=False)
 
 
 args = parser.parse_args()

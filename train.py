@@ -130,11 +130,14 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
     l2 = config.l2
     l3 = config.l3
 
-    l_sum = (l1 + l2 + l3) / 3
+    # standardize only if not ablating
+    if not config.ablate:
+        l_sum = (l1 + l2 + l3) / 3
+        l1 /= l_sum
+        l2 /= l_sum
+        l3 /= l_sum
 
-    l1 /= l_sum
-    l2 /= l_sum
-    l3 /= l_sum
+
 
     pad_idx = vocab.stoi['<pad>']
     eos_idx = vocab.stoi['<eos>']
