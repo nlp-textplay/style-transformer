@@ -131,7 +131,7 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
     l3 = config.l3
 
     # standardize only if not ablating
-    if not args.ablate:
+    if not config.ablate:
         l_sum = (l1 + l2 + l3) / 3
         l1 /= l_sum
         l2 /= l_sum

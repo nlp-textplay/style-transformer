@@ -30,6 +30,7 @@ class Config():
     l1 = args.l1
     l2 = args.l2
     l3 = args.l3
+    ablate = args.ablate
     total_its = args.total_its
     min_freq = 3
     max_length = args.max_length
